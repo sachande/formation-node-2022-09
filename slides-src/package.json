@@ -1,0 +1,25 @@
+{
+  "name": "node-2018",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Formation node 2018",
+  "main": "index.js",
+  "scripts": {
+    "build": "prez --title \"Node.js\" --sub-covers --such-notes --highlight-theme=docco --theme=beige",
+    "watch": "prez --title \"Node.js\" --sub-covers --such-notes --highlight-theme=docco --theme=beige --watch --serve",
+    "pdf": "google-chrome \"http://localhost:9000/?print-pdf=1&theme=white&highlightTheme=default\"",
+    "print": "chromium-browser --kiosk --kiosk-printing \"http://localhost:9000/?print-pdf=1&kiosk-printing=1&theme=white&highlightTheme=default\""
+  },
+  "author": "Nicolas Chambrier",
+  "license": "ISC",
+  "devDependencies": {
+    "prez": "^3.0.1"
+  },
+  "dependencies": {
+    "babel": "^5.8.12",
+    "bluebird": "^2.9.34",
+    "request": "^2.83.0",
+    "reveal.js": "^4.0.2",
+    "sinon": "^3.0.0"
+  }
+}
