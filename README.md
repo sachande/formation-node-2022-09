@@ -15,6 +15,7 @@ Contact : nicolas@chambrier.fr
 - https://github.com/byteclubfr/site/blob/1005f3a66d3747d65fe468cd63a4a8e25b3054e0/src/blog/this.md
 - https://manytools.org/hacker-tools/ascii-banner/
 - https://itnext.io/an-intro-to-node-js-that-you-may-have-missed-b175ef4277f7
+- http://bluebirdjs.com/docs/api/promise.map.html
 - https://github.com/sindresorhus/awesome-nodejs
 - https://kentcdodds.com/blog/write-tests
 - https://12factor.net/fr/
