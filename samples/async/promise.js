@@ -34,5 +34,7 @@ p1.then((c1) => {
 */
 
 const end = (buffers) => {
-  console.log(buffers);
+  // process.stdout.write(Buffer.concat(buffers));
+  // sans créer un nouveau buffer:
+  buffers.forEach((buffer) => process.stdout.write(buffer));
 };
