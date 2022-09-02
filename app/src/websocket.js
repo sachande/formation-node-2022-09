@@ -1,5 +1,9 @@
+import { createAdapter } from "@socket.io/redis-adapter";
 import { config } from "dotenv";
 import { Server } from "socket.io";
+import { fibonacci } from "./fibonacci.js";
+import { verifyToken } from "./token.js";
+import { client as redisClient } from "./redis-client.js";
 
 export const initWebsocket = async (server) => {
   /* commonjs & optional deps
@@ -25,7 +29,15 @@ export const initWebsocket = async (server) => {
 
   const io = new Server(server, options);
 
+  // Use adapter to make broadcast & rooms & socket.data + fetchSockets() work accross cluster
+  const pubClient = redisClient;
+  const subClient = redisClient.duplicate();
+  const adapter = createAdapter(pubClient, subClient);
+  io.adapter(adapter);
+
   io.on("connection", (client) => {
+    console.log("socket connected", process.pid);
+
     // receive message: client.on(event, (...args) => )
     // to client: client.emit(event, ...args)
     // broadcast to everyone: io.emit(event, ...args)
@@ -36,10 +48,35 @@ export const initWebsocket = async (server) => {
     // broadcast to room: io.to('room').to('room 2')...emit(...)
     // broadcast to room except client: socket.to('...').emit
 
-    client.on("toto", (n) => {
-      console.log("recv toto", n);
+    // TODO send existing messages on connect
+    client.use((eventInfo, next) => {
+      const { token } = client.handshake.auth;
+      const { username } = verifyToken(token);
+      if (username) {
+        client.username = username;
+        return next();
+      }
+      next(new Error("Unauthorized"));
     });
 
-    client.emit("tata", 42, true);
+    client.on("error", (err) => {
+      if (err.message === "Unauthorized") {
+        client.emit("unauthorized");
+      }
+    });
+
+    client.on("new-message", (text) => {
+      // TODO store messages
+      if (text.startsWith("fibo ")) {
+        console.log(`received fibo on worker ${process.pid}`);
+        const n = Number(text.substring(5));
+        const result = fibonacci(n);
+        text = `fibo(${n}) = ${result}`;
+      }
+
+      const date = Date.now();
+      const author = client.username;
+      io.emit("received-message", { text, date, author });
+    });
   });
 };

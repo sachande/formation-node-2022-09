@@ -1,3 +1,7 @@
+body {
+  padding-top: 0;
+}
+
 .hidden {
   display: none;
 }
@@ -5,4 +9,44 @@
 #chat-messages {
   max-height: 400px;
   overflow: auto;
+}
+
+#chat-messages {
+  list-style: none;
+  padding: 0;
+}
+
+#chat-messages li {
+  margin-bottom: .5em;
+}
+
+#chat-messages li div {
+  display: inline-block;
+  background: #b7fcc2;
+  padding: .2em .6em;
+  margin-bottom: 1em;
+  border-radius: 10px 10px 10px 0;
+  min-width: 10em;
+}
+#chat-messages li div .date {
+  font-size: .7em;
+  position: absolute;
+  bottom: -1.6em;
+  right: 0;
+  font-weight: 600;
+  color: #818181;
+}
+#chat-messages li div strong {
+  display: block;
+}
+
+#chat-messages li.mine {
+  text-align: right;
+}
+#chat-messages li.mine strong {
+  display: none;
+}
+#chat-messages li.mine div {
+  background: #b7d3fc;
+  border-radius: 10px 10px 0 10px;
 }
