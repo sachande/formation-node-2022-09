@@ -1,0 +1,8 @@
+.hidden {
+  display: none;
+}
+
+#chat-messages {
+  max-height: 400px;
+  overflow: auto;
+}
