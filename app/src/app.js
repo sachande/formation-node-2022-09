@@ -20,7 +20,7 @@ const cacheControlMiddleware = (req, res, next) => {
 };
 // app.use('/fibo/*', cacheControlMiddleware);
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   if (err.name === "ZodError") {
     res.status(400).send({ error: "Invalid input", issues: err.issues });
     return;

@@ -21,7 +21,6 @@ export const register = async (req, res, next) => {
     if (!inserted) {
       // already existed
       throw new HttpError(409, "User already exists");
-      return;
     }
 
     // user registered successfully

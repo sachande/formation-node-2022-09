@@ -5,5 +5,6 @@ const server = http.createServer(app);
 
 server.listen(3000, () => {
   const port = server.address().port;
+  // eslint-disable-next-line no-console
   console.log(`Server ready http://localhost:${port}`);
 });

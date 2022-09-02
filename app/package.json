@@ -5,14 +5,17 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "----- STANDARD -----": "",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "----- SAMPLES -----": "",
+    "lint": "eslint .",
     "hello": "echo hello",
     "clean": "rimraf ./build",
     "env": "env",
     "series": "command1 && command2",
-    "parallel": "command1 & command2 & wait",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "parallel": "command1 & command2 & wait"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +29,7 @@
     "zod": "^3.18.0"
   },
   "devDependencies": {
+    "eslint": "^8.23.0",
     "jest": "~29.0.1",
     "nodemon": "^2.0.19"
   }
