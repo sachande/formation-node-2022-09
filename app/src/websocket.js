@@ -1,9 +1,13 @@
 import { createAdapter } from "@socket.io/redis-adapter";
 import { config } from "dotenv";
 import { Server } from "socket.io";
-import { fibonacci } from "./fibonacci.js";
 import { verifyToken } from "./token.js";
 import { client as redisClient } from "./redis-client.js";
+import { Queue } from "bullmq";
+
+const FiboQueue = new Queue("Fibo", {
+  connection: redisClient.duplicate(),
+});
 
 export const initWebsocket = async (server) => {
   /* commonjs & optional deps
@@ -66,16 +70,17 @@ export const initWebsocket = async (server) => {
     });
 
     client.on("new-message", (text) => {
+      const date = Date.now();
+      const author = client.username;
+
       // TODO store messages
       if (text.startsWith("fibo ")) {
         console.log(`received fibo on worker ${process.pid}`);
         const n = Number(text.substring(5));
-        const result = fibonacci(n);
-        text = `fibo(${n}) = ${result}`;
+        FiboQueue.add(`fibo(${n})`, { n, author });
+        return;
       }
 
-      const date = Date.now();
-      const author = client.username;
       io.emit("received-message", { text, date, author });
     });
   });
