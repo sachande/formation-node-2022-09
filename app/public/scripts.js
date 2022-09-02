@@ -1,3 +1,6 @@
+// import io from 'socket.io-client'
+/* global io */
+
 (() => {
   const user = {};
 
@@ -72,9 +75,25 @@
     user.username = username;
     updateText(".user-name", username);
     show("#user-area");
+
+    // Connect to websocket server
+    const socket = io();
+
+    // send message: socket.emit(event, ...args)
+    // receive message: socket.on(event, (...args) => ...)
+
+    socket.emit("toto", 1);
+
+    socket.on("tata", (n, b) => {
+      console.log("recv tata", { n, b });
+      socket.emit("toto", 2);
+      socket.emit("coucou", { date: Date.now(), values: [1, 2, 3, 4] });
+    });
+
     // TODO open websocket connexion
     // TODO emit event to authenticate
     // TODO only if websocket server says it's OK, switch UI
+
     document
       .getElementById("chat-form")
       .addEventListener("submit", handleSendMessage);
