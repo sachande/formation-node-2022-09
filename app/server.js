@@ -1,8 +1,11 @@
 import http from "node:http";
 import { app } from "./src/app.js";
 import config from "./src/config.js";
+import { initWebsocket } from "./src/websocket.js";
 
-const server = http.createServer(app);
+export const server = http.createServer(app);
+
+initWebsocket(server);
 
 server.listen(config.port, () => {
   const port = server.address().port;
