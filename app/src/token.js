@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
+import config from "./config.js";
 
-const privateKey = "Q0Z98EAP0Z8ENP90N8AZ";
+const privateKey = config.jwt_key;
 
 export const createToken = (username) => {
   const token = jwt.sign({ username }, privateKey, {

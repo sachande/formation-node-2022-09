@@ -1,7 +1,4 @@
 import Redis from "ioredis";
+import config from "./config.js";
 
-export const client = new Redis({
-  host: "localhost",
-  port: 6379,
-  db: 0,
-});
+export const client = new Redis(config.redis);
