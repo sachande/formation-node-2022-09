@@ -1,8 +1,8 @@
-const fibonnacci = (n) => (n <= 1 ? 1 : fibonnacci(n - 1) + fibonnacci(n - 2));
+import { fibonacci } from "../fibonacci.js";
 
 export const fibo = (req, res) => {
   const n = Number(req.params.number); // req.params: Record<string, string>
-  const result = fibonnacci(n);
+  const result = fibonacci(n);
 
   /*
   res

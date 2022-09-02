@@ -3,6 +3,7 @@
 
 (() => {
   const user = {};
+  let socket;
 
   const fetchLogin = async (username, password) => {
     const response = await fetch("/auth/login", {
@@ -77,22 +78,25 @@
     show("#user-area");
 
     // Connect to websocket server
-    const socket = io();
+    socket = io({ auth: { token } });
+
+    socket.on("unauthorized", () => {
+      alert("Please reconnect");
+      document.location.reload();
+    });
+
+    setTimeout(() => socket.emit("pouet"), 1000);
 
     // send message: socket.emit(event, ...args)
     // receive message: socket.on(event, (...args) => ...)
 
-    socket.emit("toto", 1);
-
-    socket.on("tata", (n, b) => {
-      console.log("recv tata", { n, b });
-      socket.emit("toto", 2);
-      socket.emit("coucou", { date: Date.now(), values: [1, 2, 3, 4] });
-    });
-
-    // TODO open websocket connexion
     // TODO emit event to authenticate
     // TODO only if websocket server says it's OK, switch UI
+
+    // TODO show received messages
+    socket.on("received-message", ({ text, date, author }) => {
+      appendMessage({ date, author, text });
+    });
 
     document
       .getElementById("chat-form")
@@ -104,8 +108,10 @@
     e.preventDefault();
     const text = e.target.elements.text.value;
     // TODO send socket event
-    appendMessage({ date: Date.now(), author: user.username, text });
-    // TODO clear input and re-focus
+    socket.emit("new-message", text);
+    // Clear input and re-focus
+    e.target.elements.text.value = "";
+    e.target.elements.text.focus();
   };
 
   const appendMessage = ({ date, author, text }) => {
@@ -114,8 +120,11 @@
       .getElementById("template-chat-message")
       .innerText.trim();
     const element = template.content.firstChild;
-    updateText(".date", date, element);
-    updateText(".author", author, element);
+    if (author === user.username) {
+      element.classList.add("mine");
+    }
+    updateText(".date", new Date(date).toLocaleString(), element);
+    updateText(".username", author, element);
     updateText(".text", text, element);
     const list = document.getElementById("chat-messages");
     list.appendChild(element);

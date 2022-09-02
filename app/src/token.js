@@ -11,6 +11,8 @@ export const createToken = (username) => {
 };
 
 export const verifyToken = (token) => {
-  const payload = jwt.verify(token, privateKey);
+  const payload = jwt.verify(token, privateKey, {
+    ignoreExpiration: false,
+  });
   return payload; // { username }
 };
