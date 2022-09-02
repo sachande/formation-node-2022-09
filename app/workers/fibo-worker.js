@@ -32,10 +32,12 @@ new Worker(
   async (job) => {
     const { n, author = "anonymous" } = job.data;
 
-    const key = "fibo:" + n;
-    let result = await redisCache.getOrCompute(key, () => {
-      return fibonacci(job.data.n);
-    });
+    // const key = "fibo:" + n;
+    // let result = await redisCache.getOrCompute(key, () => {
+    //   return fibonacci(job.data.n);
+    // });
+
+    const result = fibonacci(job.data.n);
 
     ioEmitter.emit("received-message", {
       text: `fibo(${n}) = ${result}`,
